@@ -1,4 +1,7 @@
-var request = new XMLHttpRequest();
+/**
+ * Main process, request a security.txt file and send a message in turn.
+ */
+const request = new XMLHttpRequest();
 request.open('GET', '/security.txt', true);
 request.setRequestHeader("Content-Type", 'text/plain');
 
