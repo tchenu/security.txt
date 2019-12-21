@@ -14,8 +14,8 @@
     "persistent": false
   },
   "permissions": [
-    "activeTab",
-    "background"
+    "background",
+    "tabs"
   ],
   "content_scripts": [
     {
