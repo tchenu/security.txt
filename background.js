@@ -28,7 +28,6 @@ chrome.runtime.onMessage.addListener(
 
         // get tab id
         scannedTabs[`${sender.tab.id}`] = securityState
-        console.log(scannedTabs);
     }
 );
 
