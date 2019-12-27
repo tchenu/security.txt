@@ -7,7 +7,13 @@ request.setRequestHeader("Content-Type", 'text/plain');
 
 request.onload = function() {
     const secure = this.status === 200 && request.getResponseHeader('Content-Type').includes('text/plain')
-    chrome.runtime.sendMessage({secure: secure});
+    let content = 'security.txt is not detected.';
+
+    if (secure) {
+        content = request.response;
+    }
+
+    chrome.runtime.sendMessage({secure: secure, content: content});
 };
 
 request.onerror = function() {

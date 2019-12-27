@@ -7,11 +7,12 @@
       "16": "images/not_secure_16.png",
       "48": "images/not_secure_48.png",
       "128": "images/not_secure_128.png"
-    }
+    },
+    "default_popup": "popup.html"
   },
   "background": {
     "scripts": ["background.js"],
-    "persistent": false
+    "persistent": true
   },
   "permissions": [
     "background",
