@@ -3,6 +3,10 @@
  */
 let scannedTabs = {};
 
+chrome.browserAction.onClicked.addListener(function(tab) {
+    chrome.tabs.create({'url': chrome.extension.getURL('popup.html'), 'selected': true});
+});
+
 /**
  * Will update the extension icon
  * @param {string} securityState Determine extension icon. Can be secure || not_secure. 
@@ -23,11 +27,34 @@ const updateSecureIcon = (securityState) => {
  */
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
-        const securityState = request.secure ? 'secure' : 'not_secure';
-        updateSecureIcon(securityState);
 
-        // get tab id
-        scannedTabs[`${sender.tab.id}`] = securityState
+        // from content
+        if (request.secure !== undefined) {
+            const securityState = request.secure ? 'secure' : 'not_secure';
+            updateSecureIcon(securityState);
+    
+            // get tab id
+            scannedTabs[`${sender.tab.id}`] = {secure: securityState, content: request.content}
+            chrome.runtime.sendMessage({
+                data: {
+                    content: request.content
+                }
+            });
+        }
+
+        // from popup
+        if (request.popup !== undefined) {
+            chrome.tabs.query({
+                active: true,
+                currentWindow: true
+              }, function(tabs) {
+                const tab = tabs[0];
+                const tabId = tab.id;
+
+                
+                chrome.runtime.sendMessage({tab: scannedTabs[`${tabId}`]})
+              });
+        }
     }
 );
 
@@ -37,9 +64,9 @@ chrome.runtime.onMessage.addListener(
  */
 chrome.tabs.onActivated.addListener(function(activeInfo) {
     chrome.tabs.get(activeInfo.tabId, (tab) => { 
-        const securityState = scannedTabs[`${tab.id}`]
-        if (securityState !== undefined) {
-            updateSecureIcon(securityState);
+        const scannedTab = scannedTabs[`${tab.id}`]
+        if (scannedTab !== undefined) {
+            updateSecureIcon(scannedTab.secure);
         }
      });
 });
