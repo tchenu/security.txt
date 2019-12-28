@@ -3,10 +3,6 @@
  */
 let scannedTabs = {};
 
-chrome.browserAction.onClicked.addListener(function(tab) {
-    chrome.tabs.create({'url': chrome.extension.getURL('popup.html'), 'selected': true});
-});
-
 /**
  * Will update the extension icon
  * @param {string} securityState Determine extension icon. Can be secure || not_secure. 
@@ -33,7 +29,7 @@ chrome.runtime.onMessage.addListener(
             const securityState = request.secure ? 'secure' : 'not_secure';
             updateSecureIcon(securityState);
     
-            // get tab id
+            // set new tab in scanned tabs
             scannedTabs[`${sender.tab.id}`] = {secure: securityState, content: request.content}
             chrome.runtime.sendMessage({
                 data: {
@@ -51,7 +47,6 @@ chrome.runtime.onMessage.addListener(
                 const tab = tabs[0];
                 const tabId = tab.id;
 
-                
                 chrome.runtime.sendMessage({tab: scannedTabs[`${tabId}`]})
               });
         }
