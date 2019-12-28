@@ -11,7 +11,8 @@ chrome.runtime.sendMessage({popup: true});
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         if (request.tab !== undefined ) {
-            document.getElementById('securityContent').innerText = request.tab.content
+            const content = request.tab.content;            
+            document.getElementById('securityContent').innerText = content
         }
     }
 );
