@@ -1,6 +1,7 @@
 {
   "name": "security.txt",
-  "version": "1.0.0",
+  "author": "Thibeault Chenu <dev@tchenu.com>",
+  "version": "1.0.1",
   "description": "Know if a website has a security.txt file (https://securitytxt.org/).",
   "browser_action": {
     "default_icon": {
