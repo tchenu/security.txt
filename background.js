@@ -43,12 +43,12 @@ chrome.runtime.onMessage.addListener(
             chrome.tabs.query({
                 active: true,
                 currentWindow: true
-              }, function(tabs) {
+            }, function(tabs) {
                 const tab = tabs[0];
                 const tabId = tab.id;
 
                 chrome.runtime.sendMessage({tab: scannedTabs[`${tabId}`]})
-              });
+            });
         }
     }
 );
@@ -62,6 +62,8 @@ chrome.tabs.onActivated.addListener(function(activeInfo) {
         const scannedTab = scannedTabs[`${tab.id}`]
         if (scannedTab !== undefined) {
             updateSecureIcon(scannedTab.secure);
+        } else {
+            updateSecureIcon('not_secure');
         }
-     });
+    });
 });
